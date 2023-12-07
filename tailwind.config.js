@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -7,20 +8,5 @@ export default {
   daisyui: {
     themes: ["cupcake"],
   },
-  plugins: [],
-  theme: {
-    extend: {
-      fontFamily: {
-        caveat: ['Caveat', 'cursive'],
-        poppins: ['Poppins', 'sans-serif'],
-      },
-      colors: {
-        'bg': '#F9F5FF',
-        'primary': '#28262C',
-        'secondary': '#998FC7',
-        'accent': '#D4C2FC'
-
-      }
-    },
-  },
+  plugins: [require("daisyui")],
 }
