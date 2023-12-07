@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { useNavigate, Link } from 'react-router-dom'
 import Cookies from 'js-cookie';
 
-const Signup = () => {
+const Signin = () => {
     const {
         register,
         handleSubmit,
@@ -13,55 +13,32 @@ const Signup = () => {
 
     const router = useNavigate()
 
-    const signup = async (data) => {
+    const signin = async (data) => {
         try {
-            const response = await axios.post('http://localhost:5000/api/v1/auth/signup',
-                {
-                    ...data,
-                    created_by: data?.email
-                })
+            const response = await axios.post('http://localhost:5000/api/v1/auth/login',data)
             if (response.status === 200) {
-                Cookies.set('email', response.data.data.email)
-                toast.success('Signup Successful')
+                console.log(response.data)
+                Cookies.set('accessToken', response.data.data.accessToken)
+                Cookies.set("email", response.data.data.email)
+                toast.success('Login Successful')
                 router('/items')
             } else {
-                toast.error('Signup Failed')
+                toast.error('Login Failed')
             }
         } catch (error) {
             console.error(error)
         }
 
-        
+
     }
     return (
         <div className="hero min-h-[95vh] bg-base-200">
             <div className="">
                 <div className="text-center mb-8">
-                    <h1 className="text-5xl font-bold">Signup</h1>
+                    <h1 className="text-5xl font-bold">Sign In</h1>
                 </div>
                 <div className="card w-[50vw]  shadow-2xl bg-base-100">
-                    <form className="card-body" onSubmit={handleSubmit(signup)}>
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">Name</span>
-                            </label>
-                            <input
-                                type="text"
-                                placeholder="Name"
-                                className="input input-bordered"
-                                {...register('name', {
-                                    required: {
-                                        value: true,
-                                        message: 'Name is required',
-                                    },
-                                })}
-                            />
-                            {errors.name && (
-                                <p className="text-red-600">
-                                    {errors.name.message}
-                                </p>
-                            )}
-                        </div>
+                    <form className="card-body" onSubmit={handleSubmit(signin)}>
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text">Email</span>
@@ -103,9 +80,9 @@ const Signup = () => {
                                 </p>
                             )}
                         </div>
-                        <Link to='/signin' className="label-text link link-hover">Already have an account? <span className="text-primary">Signin</span></Link>
+                        <Link to='/' className="label-text link link-hover">Don`&apos;`t have an account? <span className="text-primary">Signup</span></Link>
                         <div className="form-control mt-6">
-                            <button className="btn btn-primary">Signup</button>
+                            <button className="btn btn-primary">Signin</button>
                         </div>
                     </form>
                 </div>
@@ -114,4 +91,4 @@ const Signup = () => {
     );
 };
 
-export default Signup;
+export default Signin;
