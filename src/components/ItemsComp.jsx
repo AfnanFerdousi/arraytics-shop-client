@@ -9,6 +9,7 @@ import {  setItems } from '../redux/actions/itemsAction';
 const ItemsComp = () => {
     const [itemModal, setItemModal] = useState(false)
     const dispatch = useDispatch();
+    const [nameFilter, setNameFilter] = useState('');
     const [loader, setLoader] = useState(false);
     const [edit, setEdit] = useState(false);
     const [item, setItem] = useState(null);
@@ -16,7 +17,12 @@ const ItemsComp = () => {
     const getItems = async () => {
         setLoader(true)
         try {
-            const res = await axios.get('http://localhost:5000/api/v1/item');
+            let url = 'http://localhost:5000/api/v1/item';
+            if (nameFilter) {
+                url += `?name=${nameFilter}`;
+            }
+
+            const res = await axios.get(url);
             if (res.status === 200) {
                 dispatch(setItems(res.data));
             }
@@ -28,7 +34,7 @@ const ItemsComp = () => {
     }
     useEffect(() => {
         getItems()
-    }, [dispatch]);
+    }, [dispatch, nameFilter]);
 
     const handleDelete = async (itemId) => {
         try {
@@ -52,6 +58,16 @@ const ItemsComp = () => {
     return (
         <div className='px-12 m-6 py-12 bg-[#fffffc] rounded-lg'>
             <h1 className='text-xl text-primary '>Items</h1>
+            <div className='mt-4 mb-8 flex items-center gap-x-4'>
+                <input
+                    type='text'
+                    value={nameFilter}
+                    placeholder='Filter by name'
+                    onChange={(e) => setNameFilter(e.target.value)}
+                    className="rounded-md px-4 py-2 border-[#ddd] bg-[#e3e3e3] outline-none "
+                />
+                
+            </div>
             <button
                 className='flex items-center bg-[#ddd] px-6 py-2 rounded-md'
                 onClick={() => setItemModal(!itemModal)}>
