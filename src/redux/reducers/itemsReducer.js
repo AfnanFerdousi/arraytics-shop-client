@@ -27,7 +27,7 @@ async function addItem(item) {
 }
 
 const initialState = {
-    items: getItems()
+    items: []
 };
 
 const itemsReducer = (state = initialState, action) => {
@@ -50,6 +50,11 @@ const itemsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 items: state.items.map((item) => (item.id === action.payload.id ? action.payload : item))
+            };
+        case 'SET_ITEMS':
+            return {
+                ...state,
+                items: action.payload,
             };
         default:
             return state;

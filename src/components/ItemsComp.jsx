@@ -3,25 +3,33 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import { GoPlus } from "react-icons/go";
 import { useEffect, useState } from 'react';
 import AddItemModal from './AddItemModal';
-import { getItems } from '../redux/reducers/itemsReducer';
+import axios from 'axios';
+import { setItems } from '../redux/actions/itemsAction';
 
 const ItemsComp = () => {
     const [itemModal, setItemModal] = useState(false)
     const dispatch = useDispatch();
+    const [loader, setLoader] = useState(false);
 
+    const getItems = async () => {
+        setLoader(true)
+        try {
+            const res = await axios.get('http://localhost:5000/api/v1/item');
+            if (res.status === 200) {
+                dispatch(setItems(res.data));
+            }
+            setLoader(false)
+        } catch (error) {
+            console.log(error);
+            setLoader(false)
+        }
+    }
     useEffect(() => {
         getItems()
-            .then((res) => {
-                if (res.status === 200) {
-                    dispatch(setItems(res.data));
-                }
-            })
-            .catch((error) => {
-                console.error('Error fetching items:', error);
-            });
     }, [dispatch]);
 
-    const allItems = useSelector((state) => state.items);
+    const allItems = useSelector((state) => state.items?.items);
+    console.log(allItems?.data)
 
     const closeModal = () => {
         setItemModal(false)
@@ -48,29 +56,19 @@ const ItemsComp = () => {
                         </thead>
                         <tbody>
                             {/* row 1 */}
-                            <tr>
-                                <th>1</th>
-                                <td>Cy Ganderton</td>
-                                <td>Quality Control Specialist</td>
-                                <td className='flex gap-x-4 items-center'>
-                                    <button className="text-xl p-2 rounded-lg bg-green-500 text-[#fff]"><MdEdit /></button>
-                                    <button className="text-xl p-2 rounded-lg bg-red-500 text-[#fff]"><MdDelete/></button>
-                                </td>
-                            </tr>
-                            {/* row 2 */}
-                            <tr className="hover">
-                                <th>2</th>
-                                <td>Hart Hagerty</td>
-                                <td>Desktop Support Technician</td>
-                                <td>Purple</td>
-                            </tr>
-                            {/* row 3 */}
-                            <tr>
-                                <th>3</th>
-                                <td>Brice Swyre</td>
-                                <td>Tax Accountant</td>
-                                <td>Red</td>
-                            </tr>
+                            {allItems?.data?.map((item, index) => {
+                                return (
+                                    <tr key={index}>
+                                        <th>{index + 1}</th>
+                                        <td>{item.name}</td>
+                                        <td>{item.created_by}</td>
+                                        <td className='flex gap-x-4 items-center'>
+                                            <button className="text-xl p-2 rounded-lg bg-green-500 text-[#fff]"><MdEdit /></button>
+                                            <button className="text-xl p-2 rounded-lg bg-red-500 text-[#fff]"><MdDelete/></button>
+                                        </td>
+                                    </tr>
+                                )
+                            })}
                         </tbody>
                     </table>
                     {itemModal && <AddItemModal

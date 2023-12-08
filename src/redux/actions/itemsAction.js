@@ -18,3 +18,8 @@ export const updateItem = (id, updatedItem) => ({
         updatedItem
     }
 })
+
+export const setItems = (items) => ({
+    type: 'SET_ITEMS',
+    payload: items,
+});
