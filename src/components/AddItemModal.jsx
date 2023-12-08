@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux';
-import { addItem } from '../redux/actions/itemsAction';
+import {  setItems } from '../redux/actions/itemsAction';
 import Cookies from 'js-cookie';
+import axios from 'axios'
 
 
 const AddItemModal = ({ closeModal }) => {
@@ -15,11 +16,22 @@ const AddItemModal = ({ closeModal }) => {
     const email = Cookies.get('email')
 
     const onSubmitItem = async (data) => {
-        console.log(data)
-        dispatch(addItem({
-            ...data,
-            created_by: email
-        }))
+       try {
+           const res = await axios.post('http://localhost:5000/api/v1/item/create-item', {
+               ...data,
+               created_by: email
+           });
+           console.log(res.data?.data)
+           if (res.status === 200) {
+               const updatedItems = await axios.get('http://localhost:5000/api/v1/item');
+               dispatch(setItems(updatedItems.data));
+
+               closeModal();
+           }
+       } catch (error) {
+        console.log(error)
+       }
+        closeModal()
     }
     return (
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 ">

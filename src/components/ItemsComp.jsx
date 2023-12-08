@@ -4,13 +4,13 @@ import { GoPlus } from "react-icons/go";
 import { useEffect, useState } from 'react';
 import AddItemModal from './AddItemModal';
 import axios from 'axios';
-import { setItems } from '../redux/actions/itemsAction';
+import { removeItem, setItems } from '../redux/actions/itemsAction';
 
 const ItemsComp = () => {
     const [itemModal, setItemModal] = useState(false)
     const dispatch = useDispatch();
     const [loader, setLoader] = useState(false);
-
+    console.log(loader)
     const getItems = async () => {
         setLoader(true)
         try {
@@ -28,9 +28,22 @@ const ItemsComp = () => {
         getItems()
     }, [dispatch]);
 
+    const handleDelete = async (itemId) => {
+        try {
+            const res = await axios.delete(`http://localhost:5000/api/v1/item/${itemId}`);
+            console.log(res)
+            if (res.status === 200) {
+                // Fetch updated items and dispatch action to update the state
+                getItems();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const allItems = useSelector((state) => state.items?.items);
     console.log(allItems?.data)
-
+    const itemsToRender = Array.isArray(allItems?.data) ? allItems?.data : [];
     const closeModal = () => {
         setItemModal(false)
     }
@@ -56,7 +69,7 @@ const ItemsComp = () => {
                         </thead>
                         <tbody>
                             {/* row 1 */}
-                            {allItems?.data?.map((item, index) => {
+                            {itemsToRender?.map((item, index) => {
                                 return (
                                     <tr key={index}>
                                         <th>{index + 1}</th>
@@ -64,7 +77,7 @@ const ItemsComp = () => {
                                         <td>{item.created_by}</td>
                                         <td className='flex gap-x-4 items-center'>
                                             <button className="text-xl p-2 rounded-lg bg-green-500 text-[#fff]"><MdEdit /></button>
-                                            <button className="text-xl p-2 rounded-lg bg-red-500 text-[#fff]"><MdDelete/></button>
+                                            <button onClick={() => handleDelete(item._id)} className="text-xl p-2 rounded-lg bg-red-500 text-[#fff]"><MdDelete/></button>
                                         </td>
                                     </tr>
                                 )
