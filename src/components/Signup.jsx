@@ -48,7 +48,7 @@ const Signup = () => {
                             <input
                                 type="text"
                                 placeholder="Name"
-                                className="input input-bordered"
+                                className="input input-bordered rounded-lg"
                                 {...register('name', {
                                     required: {
                                         value: true,
@@ -69,7 +69,7 @@ const Signup = () => {
                             <input
                                 type="email"
                                 placeholder="email"
-                                className="input input-bordered"
+                                className="input input-bordered rounded-lg"
                                 {...register('email', {
                                     required: {
                                         value: true
@@ -89,7 +89,7 @@ const Signup = () => {
                             <input
                                 type="password"
                                 placeholder="password"
-                                className="input input-bordered"
+                                className="input input-bordered rounded-lg"
                                 {...register('password', {
                                     required: {
                                         value: true,
@@ -105,7 +105,7 @@ const Signup = () => {
                         </div>
                         <Link to='/signin' className="label-text link link-hover">Already have an account? <span className="text-primary">Signin</span></Link>
                         <div className="form-control mt-6">
-                            <button className="btn btn-primary">Signup</button>
+                            <button className="btn btn-primary rounded-lg">Signup</button>
                         </div>
                     </form>
                 </div>

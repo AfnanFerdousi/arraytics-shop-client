@@ -46,10 +46,11 @@ const Signin = () => {
                             <input
                                 type="email"
                                 placeholder="email"
-                                className="input input-bordered"
+                                className="input input-bordered rounded-lg"
                                 {...register('email', {
                                     required: {
-                                        value: true
+                                        value: true,
+                                        message: 'Email is required',
                                     },
                                 })}
                             />
@@ -66,7 +67,7 @@ const Signin = () => {
                             <input
                                 type="password"
                                 placeholder="password"
-                                className="input input-bordered"
+                                className="input input-bordered rounded-lg"
                                 {...register('password', {
                                     required: {
                                         value: true,
@@ -80,9 +81,9 @@ const Signin = () => {
                                 </p>
                             )}
                         </div>
-                        <Link to='/' className="label-text link link-hover">Don`&apos;`t have an account? <span className="text-primary">Signup</span></Link>
+                        <Link to='/' className="label-text link link-hover">Don`&apos;t have an account? <span className="text-primary">Signup</span></Link>
                         <div className="form-control mt-6">
-                            <button className="btn btn-primary">Signin</button>
+                            <button className="btn btn-primary rounded-lg">Signin</button>
                         </div>
                     </form>
                 </div>
