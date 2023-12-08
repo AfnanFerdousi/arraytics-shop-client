@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import AddItemModal from './AddItemModal';
 import axios from 'axios';
 import {  setItems } from '../redux/actions/itemsAction';
+import Loader from './shared/Loader';
 
 const ItemsComp = () => {
     const [itemModal, setItemModal] = useState(false)
@@ -13,11 +14,12 @@ const ItemsComp = () => {
     const [loader, setLoader] = useState(false);
     const [edit, setEdit] = useState(false);
     const [item, setItem] = useState(null);
-    console.log(loader)
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     const getItems = async () => {
         setLoader(true)
         try {
-            let url = 'http://localhost:5000/api/v1/item';
+            let url = `http://localhost:5000/api/v1/item?page=${currentPage}`;
             if (nameFilter) {
                 url += `?name=${nameFilter}`;
             }
@@ -25,6 +27,7 @@ const ItemsComp = () => {
             const res = await axios.get(url);
             if (res.status === 200) {
                 dispatch(setItems(res.data));
+                setTotalPages(Math.ceil(res.data.meta.total / res.data.meta.limit));
             }
             setLoader(false)
         } catch (error) {
@@ -34,7 +37,7 @@ const ItemsComp = () => {
     }
     useEffect(() => {
         getItems()
-    }, [dispatch, nameFilter]);
+    }, [dispatch, nameFilter, currentPage]);
 
     const handleDelete = async (itemId) => {
         try {
@@ -87,10 +90,10 @@ const ItemsComp = () => {
                         </thead>
                         <tbody>
                             {/* row 1 */}
-                            {itemsToRender?.map((item, index) => {
+                            {loader ? <Loader /> : itemsToRender?.map((item, index) => {
                                 return (
                                     <tr key={index}>
-                                        <th>{index + 1}</th>
+                                        <th></th>
                                         <td>{item.name}</td>
                                         <td>{item.created_by}</td>
                                         <td className='flex gap-x-4 items-center'>
@@ -115,7 +118,26 @@ const ItemsComp = () => {
                         item={item}
                     />
                     }
+
+                  
                 </div>
+            </div>
+
+            {/* Pagination controls */}
+            <div className='flex justify-center mt-4 items-center'>
+                <button
+                    onClick={() => setCurrentPage((prevPage) => Math.max(prevPage - 1, 1))}
+                    disabled={currentPage === 1}
+                    className='mr-2 px-4 py-2 bg-[#ddd] rounded-md'>
+                    Prev
+                </button>
+                <span>{`Page ${currentPage} of ${totalPages}`}</span>
+                <button
+                    onClick={() => setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className='ml-2 px-4 py-2 bg-[#ddd] rounded-md'>
+                    Next
+                </button>
             </div>
             
         </div>

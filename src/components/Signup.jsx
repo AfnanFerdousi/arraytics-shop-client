@@ -34,7 +34,7 @@ const Signup = () => {
         
     }
     return (
-        <div className="hero min-h-[95vh] bg-base-200">
+        <div className="hero min-h-[95vh] bg-base-[#ddd]">
             <div className="">
                 <div className="text-center mb-8">
                     <h1 className="text-5xl font-bold">Signup</h1>
