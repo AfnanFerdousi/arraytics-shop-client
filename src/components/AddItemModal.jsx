@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 import axios from 'axios'
 
 
-const AddItemModal = ({ closeModal }) => {
+const AddItemModal = ({ closeModal, edit, item }) => {
     const {
         register,
         handleSubmit,
@@ -16,13 +16,23 @@ const AddItemModal = ({ closeModal }) => {
     const email = Cookies.get('email')
 
     const onSubmitItem = async (data) => {
-       try {
-           const res = await axios.post('http://localhost:5000/api/v1/item/create-item', {
-               ...data,
-               created_by: email
-           });
-           console.log(res.data?.data)
-           if (res.status === 200) {
+        try {
+            let response;
+            console.log(edit)
+           if (edit === true) {
+                response = await axios.patch(`http://localhost:5000/api/v1/item/${item._id}`, {
+                   ...data,
+                   created_by: email
+               });
+           }
+           else {
+               response = await axios.post('http://localhost:5000/api/v1/item/create-item', {
+                   ...data,
+                   created_by: email
+               });
+           }
+            console.log(response.data?.data)
+            if (response.status === 200) {
                const updatedItems = await axios.get('http://localhost:5000/api/v1/item');
                dispatch(setItems(updatedItems.data));
 
@@ -46,6 +56,7 @@ const AddItemModal = ({ closeModal }) => {
                         <input
                             type="text"
                             placeholder="Item Name"
+                            defaultValue={item !== null ? item?.name : null}
                             className="input input-bordered rounded-lg"
                             {...register('name', {
                                 required: {
@@ -61,7 +72,7 @@ const AddItemModal = ({ closeModal }) => {
                         )}
                     </div>
 
-                    <button type='submit' className="px-4 py-2 mt-4 bg-[#ddd] rounded-lg">Add</button>
+                    <button type='submit' className="px-4 py-2 mt-4 bg-[#ddd] rounded-lg">{edit ? 'Update' : 'Add'}</button>
                 </form>
                
             </div>

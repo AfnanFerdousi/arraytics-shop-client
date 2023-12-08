@@ -4,12 +4,14 @@ import { GoPlus } from "react-icons/go";
 import { useEffect, useState } from 'react';
 import AddItemModal from './AddItemModal';
 import axios from 'axios';
-import { removeItem, setItems } from '../redux/actions/itemsAction';
+import {  setItems } from '../redux/actions/itemsAction';
 
 const ItemsComp = () => {
     const [itemModal, setItemModal] = useState(false)
     const dispatch = useDispatch();
     const [loader, setLoader] = useState(false);
+    const [edit, setEdit] = useState(false);
+    const [item, setItem] = useState(null);
     console.log(loader)
     const getItems = async () => {
         setLoader(true)
@@ -76,7 +78,13 @@ const ItemsComp = () => {
                                         <td>{item.name}</td>
                                         <td>{item.created_by}</td>
                                         <td className='flex gap-x-4 items-center'>
-                                            <button className="text-xl p-2 rounded-lg bg-green-500 text-[#fff]"><MdEdit /></button>
+                                            <button onClick={() =>
+                                            {
+                                                setEdit(true)
+                                                setItem(item)
+                                                setItemModal(!itemModal)
+                                                }
+                                            } className="text-xl p-2 rounded-lg bg-green-500 text-[#fff]"><MdEdit /></button>
                                             <button onClick={() => handleDelete(item._id)} className="text-xl p-2 rounded-lg bg-red-500 text-[#fff]"><MdDelete/></button>
                                         </td>
                                     </tr>
@@ -84,8 +92,13 @@ const ItemsComp = () => {
                             })}
                         </tbody>
                     </table>
-                    {itemModal && <AddItemModal
-                        closeModal={closeModal}/>}
+                    {itemModal &&
+                        <AddItemModal
+                        closeModal={closeModal}
+                        edit={edit}
+                        item={item}
+                    />
+                    }
                 </div>
             </div>
             
