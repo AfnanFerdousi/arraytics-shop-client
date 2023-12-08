@@ -15,7 +15,7 @@ const Signin = () => {
 
     const signin = async (data) => {
         try {
-            const response = await axios.post('http://localhost:5000/api/v1/auth/login',data)
+            const response = await axios.post('https://arraytics-shop.vercel.app/auth/login', data)
             if (response.status === 200) {
                 console.log(response.data)
                 Cookies.set('accessToken', response.data.data.accessToken)

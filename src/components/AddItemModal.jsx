@@ -24,19 +24,19 @@ const AddItemModal = ({ closeModal, edit, item }) => {
             let response;
             console.log(edit)
             if (edit === true) {
-                response = await axios.patch(`http://localhost:5000/api/v1/item/${item._id}`, {
+                response = await axios.patch(`https://arraytics-shop.vercel.app/item/${item._id}`, {
                     ...data,
                     created_by: email
                 });
             }
             else {
-                response = await axios.post('http://localhost:5000/api/v1/item/create-item', {
+                response = await axios.post('https://arraytics-shop.vercel.app/item/create-item', {
                     ...data,
                     created_by: email
                 });
             }
             if (response.status === 200) {
-                const updatedItems = await axios.get('http://localhost:5000/api/v1/item');
+                const updatedItems = await axios.get('https://arraytics-shop.vercel.app/item');
                 dispatch(setItems(updatedItems.data));
                 setLoader(false)
                 closeModal();
@@ -52,32 +52,32 @@ const AddItemModal = ({ closeModal, edit, item }) => {
             <div className="bg-white p-6 rounded-md w-[30vw]">
                 <button className=" top-2 right-[-95%] relative" onClick={closeModal}>✕</button>
                 <h3 className="font-bold text-lg">Add Item</h3>
-                {loader ? <Loader/> :
-                <form onSubmit={handleSubmit(onSubmitItem)}>
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text">Name</span>
-                        </label>
-                        <input
-                            type="text"
-                            placeholder="Item Name"
-                            defaultValue={item !== null ? item?.name : null}
-                            className="input input-bordered rounded-lg"
-                            {...register('name', {
-                                required: {
-                                    value: true,
-                                    message: 'Name is required',
-                                },
-                            })}
-                        />
-                        {errors.name && (
-                            <p className="text-red-600">
-                                {errors.name.message}
-                            </p>
-                        )}
-                    </div>
+                {loader ? <Loader /> :
+                    <form onSubmit={handleSubmit(onSubmitItem)}>
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text">Name</span>
+                            </label>
+                            <input
+                                type="text"
+                                placeholder="Item Name"
+                                defaultValue={item !== null ? item?.name : null}
+                                className="input input-bordered rounded-lg"
+                                {...register('name', {
+                                    required: {
+                                        value: true,
+                                        message: 'Name is required',
+                                    },
+                                })}
+                            />
+                            {errors.name && (
+                                <p className="text-red-600">
+                                    {errors.name.message}
+                                </p>
+                            )}
+                        </div>
 
-                    <button type='submit' className="px-4 py-2 mt-4 bg-[#ddd] rounded-lg">{edit ? 'Update' : 'Add'}</button>
+                        <button type='submit' className="px-4 py-2 mt-4 bg-[#ddd] rounded-lg">{edit ? 'Update' : 'Add'}</button>
                     </form>
                 }
 

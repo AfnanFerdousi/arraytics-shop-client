@@ -4,7 +4,7 @@ import { GoPlus } from "react-icons/go";
 import { useEffect, useState } from 'react';
 import AddItemModal from './AddItemModal';
 import axios from 'axios';
-import {  setItems } from '../redux/actions/itemsAction';
+import { setItems } from '../redux/actions/itemsAction';
 import Loader from './shared/Loader';
 
 const ItemsComp = () => {
@@ -19,7 +19,7 @@ const ItemsComp = () => {
     const getItems = async () => {
         setLoader(true)
         try {
-            let url = `http://localhost:5000/api/v1/item?page=${currentPage}`;
+            let url = `https://arraytics-shop.vercel.app/item?page=${currentPage}`;
             if (nameFilter) {
                 url += `?name=${nameFilter}`;
             }
@@ -41,7 +41,7 @@ const ItemsComp = () => {
 
     const handleDelete = async (itemId) => {
         try {
-            const res = await axios.delete(`http://localhost:5000/api/v1/item/${itemId}`);
+            const res = await axios.delete(`https://arraytics-shop.vercel.app/item/${itemId}`);
             console.log(res)
             if (res.status === 200) {
                 // Fetch updated items and dispatch action to update the state
@@ -69,7 +69,7 @@ const ItemsComp = () => {
                     onChange={(e) => setNameFilter(e.target.value)}
                     className="rounded-md px-4 py-2 border-[#ddd] bg-[#e3e3e3] outline-none "
                 />
-                
+
             </div>
             <button
                 className='flex items-center bg-[#ddd] px-6 py-2 rounded-md'
@@ -97,14 +97,13 @@ const ItemsComp = () => {
                                         <td>{item.name}</td>
                                         <td>{item.created_by}</td>
                                         <td className='flex gap-x-4 items-center'>
-                                            <button onClick={() =>
-                                            {
+                                            <button onClick={() => {
                                                 setEdit(true)
                                                 setItem(item)
                                                 setItemModal(!itemModal)
-                                                }
+                                            }
                                             } className="text-xl p-2 rounded-lg bg-green-500 text-[#fff]"><MdEdit /></button>
-                                            <button onClick={() => handleDelete(item._id)} className="text-xl p-2 rounded-lg bg-red-500 text-[#fff]"><MdDelete/></button>
+                                            <button onClick={() => handleDelete(item._id)} className="text-xl p-2 rounded-lg bg-red-500 text-[#fff]"><MdDelete /></button>
                                         </td>
                                     </tr>
                                 )
@@ -113,13 +112,13 @@ const ItemsComp = () => {
                     </table>
                     {itemModal &&
                         <AddItemModal
-                        closeModal={closeModal}
-                        edit={edit}
-                        item={item}
-                    />
+                            closeModal={closeModal}
+                            edit={edit}
+                            item={item}
+                        />
                     }
 
-                  
+
                 </div>
             </div>
 
@@ -139,7 +138,7 @@ const ItemsComp = () => {
                     Next
                 </button>
             </div>
-            
+
         </div>
     );
 };

@@ -15,7 +15,7 @@ const Signup = () => {
 
     const signup = async (data) => {
         try {
-            const response = await axios.post('http://localhost:5000/api/v1/auth/signup',
+            const response = await axios.post('https://arraytics-shop.vercel.app/auth/signup',
                 {
                     ...data,
                     created_by: data?.email
@@ -31,7 +31,7 @@ const Signup = () => {
             console.error(error)
         }
 
-        
+
     }
     return (
         <div className="hero min-h-[95vh] bg-base-[#ddd]">
