@@ -15,7 +15,7 @@ const Signup = () => {
 
     const signup = async (data) => {
         try {
-            const response = await axios.post('https://arraytics-shop.vercel.app/api/v1/api/v1/auth/signup',
+            const response = await axios.post('https://arraytics-shop.vercel.app/api/v1/auth/signup',
                 {
                     ...data,
                     created_by: data?.email
