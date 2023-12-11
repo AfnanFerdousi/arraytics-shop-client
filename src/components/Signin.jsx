@@ -15,7 +15,7 @@ const Signin = () => {
 
     const signin = async (data) => {
         try {
-            const response = await axios.post('https://arraytics-shop.vercel.app/auth/login', data)
+            const response = await axios.post('https://arraytics-shop.vercel.app/api/v1/auth/login', data)
             if (response.status === 200) {
                 console.log(response.data)
                 Cookies.set('accessToken', response.data.data.accessToken)
@@ -43,6 +43,7 @@ const Signin = () => {
                             <label className="label">
                                 <span className="label-text">Email</span>
                             </label>
+                            <h3 className='text-red-600 font-poppins text-lg'></h3>
                             <input
                                 type="email"
                                 placeholder="email"

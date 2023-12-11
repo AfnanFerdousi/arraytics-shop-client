@@ -24,19 +24,19 @@ const AddItemModal = ({ closeModal, edit, item }) => {
             let response;
             console.log(edit)
             if (edit === true) {
-                response = await axios.patch(`https://arraytics-shop.vercel.app/item/${item._id}`, {
+                response = await axios.patch(`https://arraytics-shop.vercel.app/api/v1/item/${item._id}`, {
                     ...data,
                     created_by: email
                 });
             }
             else {
-                response = await axios.post('https://arraytics-shop.vercel.app/item/create-item', {
+                response = await axios.post('https://arraytics-shop.vercel.app/api/v1/item/create-item', {
                     ...data,
                     created_by: email
                 });
             }
             if (response.status === 200) {
-                const updatedItems = await axios.get('https://arraytics-shop.vercel.app/item');
+                const updatedItems = await axios.get('https://arraytics-shop.vercel.app/api/v1/item');
                 dispatch(setItems(updatedItems.data));
                 setLoader(false)
                 closeModal();

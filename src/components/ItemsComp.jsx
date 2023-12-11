@@ -19,7 +19,7 @@ const ItemsComp = () => {
     const getItems = async () => {
         setLoader(true)
         try {
-            let url = `https://arraytics-shop.vercel.app/item?page=${currentPage}`;
+            let url = `https://arraytics-shop.vercel.app/api/v1/item?page=${currentPage}`;
             if (nameFilter) {
                 url += `?name=${nameFilter}`;
             }
@@ -41,7 +41,7 @@ const ItemsComp = () => {
 
     const handleDelete = async (itemId) => {
         try {
-            const res = await axios.delete(`https://arraytics-shop.vercel.app/item/${itemId}`);
+            const res = await axios.delete(`https://arraytics-shop.vercel.app/api/v1/item/${itemId}`);
             console.log(res)
             if (res.status === 200) {
                 // Fetch updated items and dispatch action to update the state
