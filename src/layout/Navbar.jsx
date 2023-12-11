@@ -8,7 +8,7 @@ const Navbar = () => {
         window.location.href = '/signin'
     }
     return (
-        <div className='lg:px-32 md:px-8 md:py-6 px-4 py-2 bg-bg shadow-lg flex items-center justify-between font-poppins'>
+        <div className='lg:px-32 md:px-8 md:py-4 px-4 py-2 bg-bg shadow-lg flex items-center justify-between font-poppins'>
             <Link to='/'> <h2 className='lg:text-3xl md:text-xl text-md font-semibold text-primary  w-full'>Arraytics</h2> </Link>
 
             <div className='flex items-center gap-x-4'>
